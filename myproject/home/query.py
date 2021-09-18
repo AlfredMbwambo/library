@@ -36,7 +36,7 @@ def Librarian_login(data):
      return json.dumps({'code': 300,
                         "msg": "Name is arleady exist"})                                              
 
-# def student_registration(data):
+def student_registration(data):
   if not Student.students.filter(full_name=data['full_name']).exists():    
     new_student = Student()
     new_student.student_id = uuid.uuid4()
