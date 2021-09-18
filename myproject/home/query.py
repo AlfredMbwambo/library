@@ -84,3 +84,14 @@ def search_book_borrrowed(data):
   
   return json.dumps({'code': 200, "name": serializers_book_borrowed})
 
+def comment_book_borrowed(data):
+  if Loan_book.loan_books.filter(nam_book_borrowed_id=data['nam_book_borrowed_id']).exists():
+
+    book_taken = Loan_book.loan_books.get(nam_book_borrowed_id=data['nam_book_borrowed_id'])
+    book_taken.remarks = data['remarks']
+    book_taken.save()
+    return  json.dumps({'code': 200,
+                        "msg":"comment is succefully stored"})
+  else:
+        return json.dumps({'code': 300,
+                       "msg": "Invalid book_comment"})
