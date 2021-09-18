@@ -94,4 +94,4 @@ def comment_book_borrowed(data):
                         "msg":"comment is succefully stored"})
   else:
         return json.dumps({'code': 300,
-                       "msg": "Invalid book_comment"})
+                       "msg": "Something went wrong"})
