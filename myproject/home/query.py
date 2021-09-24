@@ -3,6 +3,10 @@ from  home.models import Student
 from  home.models import Loan_book
 from  home.serializer import StudentSerializer
 from  home.serializer import Loan_booktSerializer
+from  home.serializer import Loan_booktSerializer
+from  home.serializer import pull_all_studentSerializer
+from  home.serializer import pull_all_booksborrowedSerializer
+from  home.serializer import pull_all_booksnotreturnedSerializer
 
 import json
 
@@ -95,3 +99,40 @@ def comment_book_borrowed(data):
   else:
         return json.dumps({'code': 300,
                        "msg": "Invalid book_comment"})
+
+def marked_status_returned(data):
+  if Loan_book.loan_books.filter(nam_book_borrowed_id=data['nam_book_borrowed_id']).exists():
+
+    book_taken = Loan_book.loan_books.get(nam_book_borrowed_id=data['nam_book_borrowed_id'])
+    book_taken.status = data['status']
+    book_taken.save()
+    return  json.dumps({'code': 200,
+                        "msg":"status_marked"})
+  else:
+        return json.dumps({'code': 300,
+                       "msg": "Invalid status_marked"})
+
+#kuvuta all student registered
+def pull_all_student(data):
+  Students = Student.students.all()
+  fetch_Students = pull_all_studentSerializer(Students,many=True).data
+
+  return json.dumps({'code': 200, "Students": fetch_Students})
+
+#kuvuta all book ambazo zime ombwa na wanafunzi
+def pull_all_books_borrowed(data):
+  Books_borrowed = Loan_book.loan_books.all()
+  fetch_books_borrowed = pull_all_booksborrowedSerializer(Books_borrowed,many=True).data
+
+  return json.dumps({'code': 200, "books_borrowed": fetch_books_borrowed})
+
+
+#kuvuta all book ambavyo avija rudishwa
+def pull_all_books_not_returned(data):
+  Books_borrowed = Loan_book.loan_books.filter(status="False")
+  fetch_books_borrowed = pull_all_booksnotreturnedSerializer(Books_borrowed,many=True).data
+
+  return json.dumps({'code': 200, "books_borrowed": fetch_books_borrowed})   
+                                    
+
+                                    

@@ -11,6 +11,10 @@ from  home.query import search_student_name
 from  home.query import borrow_book
 from  home.query import search_book_borrrowed
 from  home.query import comment_book_borrowed
+from  home.query import marked_status_returned
+from  home.query import pull_all_student
+from  home.query import pull_all_books_borrowed
+from  home.query import pull_all_books_not_returned
 
 
 @csrf_exempt
@@ -38,8 +42,20 @@ def API(request):
         responseString =  search_book_borrrowed(client_data['data'])
 
     if client_data['code'] == 206:
-        responseString = comment_book_borrowed(client_data['data'])    
+        responseString = comment_book_borrowed(client_data['data'])
+        
+    if client_data['code'] == 207:
+        responseString = marked_status_returned(client_data['data'])
 
+    if client_data['code'] == 208:
+        responseString = pull_all_student(client_data['data'])
+
+    if client_data['code'] == 209:
+        responseString = pull_all_books_borrowed(client_data['data'])
+
+    if client_data['code'] == 210:
+        responseString = pull_all_books_not_returned(client_data['data'])    
+       
     return HttpResponse(responseString)  
 
 
